@@ -144,7 +144,7 @@ wget.callbacks.get_urls = function(file, url, is_css, iri)
     users[identifier] = true
   end
 
-  if allowed(url, nil) then
+  if allowed(url, nil) and not string.match(url, "^https?://fimg%.freeml%.com") then
     html = read_file(file)
     if string.match(url, "^https://[^/]*freeml%.com/ep%.umzx/grid/MLC/node/MlcHomeFront/mlc_id/[0-9]+$") then
       local match = string.match(html, '<div%s+class="emblem">%s*<a%s+href="/([^"]+)">')
