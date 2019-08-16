@@ -35,7 +35,8 @@ end
 
 allowed = function(url, parenturl)
   if string.match(url, "'+")
-      or string.match(url, "[<>\\%*%$;%^%[%],%(%){}]") then
+      or string.match(url, "[<>\\%*%$;%^%[%],%(%){}]")
+      or string.match(url, "^https?://[^/]+/[^/]+/cal_d/") then
     return false
   end
 
@@ -151,6 +152,11 @@ wget.callbacks.get_urls = function(file, url, is_css, iri)
         users[match] = true
       end
     end
+    local match = string.match(html, '<strong>Blog%s+URL</strong>[^<]+<a[^>]+href="([^"]+)"')
+    if match and not addedtolist[match] then
+      table.insert(urls, {url=match})
+      addedtolist[match] = true
+    end
     for newurl in string.gmatch(string.gsub(html, "&quot;", '"'), '([^"]+)') do
       checknewurl(newurl)
     end
@@ -206,7 +212,7 @@ wget.callbacks.httploop_result = function(url, err, http_stat)
   end
   
   if status_code >= 500
-      or (status_code >= 400 and status_code ~= 404)
+      or (status_code >= 400 and status_code ~= 404 and status_code ~= 400)
       or status_code  == 0 then
     io.stdout:write("Server returned "..http_stat.statcode.." ("..err.."). Sleeping.\n")
     io.stdout:flush()
