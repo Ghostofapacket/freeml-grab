@@ -58,7 +58,7 @@ if not WGET_LUA:
 #
 # Update this each time you make a non-cosmetic change.
 # It will be added to the WARC files and reported to the tracker.
-VERSION = '20190820.02'
+VERSION = '20190820.03'
 USER_AGENT = 'ArchiveTeam'
 TRACKER_ID = 'freeml'
 TRACKER_HOST = 'tracker.archiveteam.org'
@@ -220,7 +220,7 @@ class WgetArgs(object):
 project = Project(
     title = 'freeml',
     project_html = '''
-    <img class="project-logo" alt="logo" src="https://www.archiveteam.org/images/8/86/Angelfire-logo.png" height="50px"/>
+    <img class="project-logo" alt="logo" src="https://www.archiveteam.org/images/6/65/Freeml_logo-20190809.PNG" height="50px"/>
     <h2>freeml.com <span class="links"><a href="http://www.freeml.com/">Website</a> &middot; <a href="http://tracker.archiveteam.org/freeml/">Leaderboard</a></span></h2>
     '''
 )
