@@ -51,6 +51,19 @@ allowed = function(url, parenturl)
     tested[s] = tested[s] + 1
   end
 
+  local year = string.match(url, "^https?://[^/]+%.freeml%.com/[^/]+/cal_[a-z]/([0-9]+)")
+  if year then
+    if tonumber(year) < 2000 or tonumber(year) > 2019 then
+print('skip')
+      return false
+    end
+  end
+
+  if string.match(url, "^https?://fimg%.freeml%.com/data/")
+      or string.match(url, "^https?://[^/]+freeml%.com/.+/OriginalPhotoFront/") then
+    return true
+  end
+
   if string.match(url, "^https?://[^/]*freeml%.com/[^/]+") then
     if users[string.match(url, "^https?://[^/]+/([^/]+)")] then
       return true
