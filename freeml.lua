@@ -152,11 +152,6 @@ wget.callbacks.get_urls = function(file, url, is_css, iri)
     end
   end
 
-  if string.match(url, "^https://[^/]*freeml%.com/ep%.umzx/grid/MLC/node/MlcHomeFront/mlc_id/[0-9]+$") then
-    local identifier = string.match(url, "([0-9]+)$")
-    users[identifier] = true
-  end
-
   if allowed(url, nil) and not string.match(url, "^https?://fimg%.freeml%.com") then
     html = read_file(file)
     if string.match(url, "^https://[^/]*freeml%.com/ep%.umzx/grid/MLC/node/MlcHomeFront/mlc_id/[0-9]+$") then
@@ -169,6 +164,10 @@ wget.callbacks.get_urls = function(file, url, is_css, iri)
     if match and not addedtolist[match] then
       table.insert(urls, {url=match})
       addedtolist[match] = true
+    end
+    if string.match(html, "_Incapsula_Resource") or string.match(url, "_Incapsula_Resource") then
+      print("Found '_Incapsula_Resource'.")
+      abortgrab = true
     end
     for newurl in string.gmatch(string.gsub(html, "&quot;", '"'), '([^"]+)') do
       checknewurl(newurl)
@@ -199,6 +198,11 @@ wget.callbacks.httploop_result = function(url, err, http_stat)
   url_count = url_count + 1
   io.stdout:write(url_count .. "=" .. status_code .. " " .. url["url"] .. "  \n")
   io.stdout:flush()
+
+  local match = string.match(url["url"], "^https://[^/]*freeml%.com/ep%.umzx/grid/MLC/node/MlcHomeFront/mlc_id/([0-9]+)$")
+  if match then
+    users[match] = true
+  end
 
   if (status_code >= 300 and status_code <= 399) then
     local newloc = string.match(http_stat["newloc"], "^([^#]+)")
