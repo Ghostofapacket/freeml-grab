@@ -24,7 +24,7 @@ from seesaw.pipeline import Pipeline
 from seesaw.project import Project
 from seesaw.util import find_executable
 
-
+print(seesaw.__file__)
 # check the seesaw version
 if StrictVersion(seesaw.__version__) < StrictVersion('0.8.5'):
     raise Exception('This pipeline needs seesaw version 0.8.5 or higher.')
@@ -63,7 +63,7 @@ VERSION = '20190830.01'
 with open('user-agents', 'r') as f:
     USER_AGENT = random.choice(f.read().splitlines()).strip()
 TRACKER_ID = 'freeml'
-TRACKER_HOST = 'tracker.archiveteam.org'
+TRACKER_HOST = 'tracker.kiska.pw'
 
 
 ###########################################################################
@@ -236,11 +236,12 @@ pipeline = Pipeline(
         WgetArgs(),
         max_tries=2,
         accept_on_exit_code=[0, 4, 8],
+        kill_pipeline_on_error=True,
         env={
             'item_dir': ItemValue('item_dir'),
             'item_value': ItemValue('item_value'),
             'item_type': ItemValue('item_type'),
-            'warc_file_base': ItemValue('warc_file_base'),
+            'warc_file_base': ItemValue('warc_file_base')
         }
     ),
     PrepareStatsForTracker(

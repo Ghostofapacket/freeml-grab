@@ -30,8 +30,13 @@ class Task(object):
         item.set_task_status(self, Item.TaskStatus.failed)
         self.on_fail_item(self, item)
         self.on_finish_item(self, item)
-		print("killing pipeline")
-		sys.exit()
+
+    def hard_fail_item(self, item):
+        item.set_task_status(self, Item.TaskStatus.failed)
+        self.on_fail_item(self, item)
+        self.on_finish_item(self, item)
+        print("killing pipeline\n")
+        sys.exit()
 
     def complete_item(self, item):
         item.set_task_status(self, Item.TaskStatus.completed)
