@@ -24,10 +24,9 @@ from seesaw.pipeline import Pipeline
 from seesaw.project import Project
 from seesaw.util import find_executable
 
-
 # check the seesaw version
-if StrictVersion(seesaw.__version__) < StrictVersion('0.8.5'):
-    raise Exception('This pipeline needs seesaw version 0.8.5 or higher.')
+if StrictVersion(seesaw.__version__) < StrictVersion('0.10.0'):
+    raise Exception('This pipeline needs seesaw version 0.10.0 or higher.')
 
 
 ###########################################################################
@@ -59,7 +58,7 @@ if not WGET_LUA:
 #
 # Update this each time you make a non-cosmetic change.
 # It will be added to the WARC files and reported to the tracker.
-VERSION = '20190830.01'
+VERSION = '20190902.01'
 with open('user-agents', 'r') as f:
     USER_AGENT = random.choice(f.read().splitlines()).strip()
 TRACKER_ID = 'freeml'
@@ -182,6 +181,8 @@ class WgetArgs(object):
             '--tries', 'inf',
             '--domains', 'freeml.com',
             '--span-hosts',
+            '-w', '5',
+            '--random-wait',
             '--waitretry', '30',
             '--warc-file', ItemInterpolation('%(item_dir)s/%(warc_file_base)s'),
             '--warc-header', 'operator: Archive Team',
@@ -232,16 +233,20 @@ pipeline = Pipeline(
     GetItemFromTracker('http://%s/%s' % (TRACKER_HOST, TRACKER_ID), downloader,
         VERSION),
     PrepareDirectories(warc_prefix='freeml'),
-    WgetDownload(
-        WgetArgs(),
-        max_tries=2,
-        accept_on_exit_code=[0, 4, 8],
-        env={
-            'item_dir': ItemValue('item_dir'),
-            'item_value': ItemValue('item_value'),
-            'item_type': ItemValue('item_type'),
-            'warc_file_base': ItemValue('warc_file_base'),
-        }
+    LimitConcurrent(NumberConfigValue(min=1, max=1, default='1',
+        name='shared:wget_download', title='wget-lua threads',
+        description='The maximum number of concurrent downloads.'),
+        WgetDownload(
+            WgetArgs(),
+            max_tries=2,
+            accept_on_exit_code=[0, 4, 8],
+            env={
+                'item_dir': ItemValue('item_dir'),
+                'item_value': ItemValue('item_value'),
+                'item_type': ItemValue('item_type'),
+                'warc_file_base': ItemValue('warc_file_base')
+                }
+        ),
     ),
     PrepareStatsForTracker(
         defaults={'downloader': downloader, 'version': VERSION},
