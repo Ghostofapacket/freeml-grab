@@ -1,0 +1,65 @@
+
+{% if realize(warrior.selected_project_config_value) %}
+  {% set project_name = realize(warrior.selected_project_config_value) %}
+  {% if project_name == "auto" %}
+    <h3>Your current project</h3>
+    <ul>
+      <li>
+        <h4>ArchiveTeam&#8217;s Choice</h4>
+        <p>Your warrior will automatically work on the current ArchiveTeam project.</p>
+        <form method="post" action="/api/deselect-project" class="js-api-form">
+          <div class="select"><input type="hidden" name="project_name" value="{{ project_name }}" /><input type="submit" value="Stop this project" /></div>
+        </form>
+      </li>
+    </ul>
+
+  {% elif project_name in warrior.projects %}
+    {% set project_data = warrior.projects[project_name] %}
+    <h3>Your current project</h3>
+    <ul>
+      <li>
+        {% if "logo" in project_data %}
+          <img class="project-logo" alt="Logo" src="{{ project_data["logo"] }}" height="50px" />
+        {% end %}
+        <h4>{{ project_data["title"] }}</h4>
+        <p>{{ project_data["description"] }}</p>
+        <form method="post" action="/api/deselect-project" class="js-api-form">
+          <div class="select"><input type="hidden" name="project_name" value="{{ project_name }}" /><input type="submit" value="Stop this project" /></div>
+        </form>
+      </li>
+    </ul>
+  {% end %}
+{% end %}
+
+<h3>Available projects</h3>
+<ul>
+  {% if realize(warrior.selected_project_config_value) != "auto" %}
+    <li>
+      <h4>ArchiveTeam&#8217;s Choice</h4>
+      <p>Your warrior will automatically work on the current ArchiveTeam project.</p>
+      <form method="post" action="/api/select-project" class="js-api-form">
+        <div class="select"><input type="hidden" name="project_name" value="auto" /><input type="submit" value="Work on this project" /></div>
+      </form>
+    </li>
+  {% end %}
+  {% for (project_name, project_data) in warrior.projects.items() %}
+    {% if project_name != realize(warrior.selected_project_config_value) %}
+      <li {% if "deadline_int" in project_data %} data-deadline="{{ str(project_data["deadline_int"]) }}" {% end %} id="project-{{ project_name }}">
+        {% if "logo" in project_data %}
+          <img class="project-logo" alt="Logo" src="{{ project_data["logo"] }}" height="50px" />
+        {% end %}
+        <h4>{{ project_data["title"] }}</h4>
+        <p>{{ project_data["description"] }}</p>
+        <form method="post" action="/api/select-project" class="js-api-form">
+          <div class="select"><input type="hidden" name="project_name" value="{{ project_name }}" /><input type="submit" value="Work on this project" /></div>
+        </form>
+      </li>
+    {% end %}
+  {% end %}
+  {% if warrior.contacting_hq_failed %}
+    <p>Uh-oh! There was a problem contacting warrior headquarters. Retrying in a few minutes&hellip;</p>
+  {% elif not warrior.projects %}
+    <p>Phooey&hellip; No warrior projects are available for participation yet!</p>
+  {% end %}
+</ul>
+

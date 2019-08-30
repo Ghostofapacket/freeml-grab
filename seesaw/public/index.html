@@ -1,0 +1,132 @@
+﻿<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+
+    <title>ArchiveTeam Warrior</title>
+
+    <link rel="stylesheet" type="text/css" href="reset.css?v={{ timestamp }}" />
+    <link rel="stylesheet" type="text/css" href="style.css?v={{ timestamp }}" />
+    <link rel="shortcut icon" href="favicon.ico?v={{ timestamp }}" />
+    <script src="jquery-1.12.4.min.js?v={{ timestamp }}"></script>
+    <script src="sockjs-0.3.js?v={{ timestamp }}"></script>
+    <script src="smoothie.js?v={{ timestamp }}"></script>
+    <script src="script.js?v={{ timestamp }}"></script>
+  </head>
+
+<body class="with-warrior-menu single-project">
+  <noscript>
+    <div class="content" id="no-js-message">
+      <p><strong id="no-js-title">The warrior requires JavaScript support.</strong></p>
+      <p>Please enable JavaScript or use a JavaScript-enabled web browser.<p>
+    </div>
+  </noscript>
+
+  <div id="warrior-menu">
+    <div id="warrior-logo">
+      <h1><img src="warrior-logo.png?v={{ timestamp }}" width="121" height="123" alt="ArchiveTeam Warrior" /></h1>
+    </div>
+
+    <div id="tabs">
+      <ul>
+        <li class="active" id="tab-current-project"><a href="#current" data-view="view-current-project">Current project</a></li>
+      </ul>
+      <ul class="multi-project">
+        <li id="tab-all-projects"><a href="#all" data-view="view-all-projects">Available projects</a></li>
+        <li id="tab-settings"><a href="#settings" data-view="view-settings">Your settings</a></li>
+        <li id="tag-help"><a href="help" data-view="view-help">About 
+          <span id="broadcastMessage-indicator" title="New Announcement">&nbsp;✉&nbsp;</span></a>
+        </li>
+      </ul>
+    </div>
+
+    <table id="warrior-status" cellspacing="0">
+      <tbody>
+        <tr>
+          <td id="warrior-status-description">&nbsp;</td>
+        </tr>
+        <tr>
+          <td>
+            <form id="warrior-status-form" method="post" action="/api/stop" class="js-api-form">
+              <input type="submit" value="Stop" />
+            </form>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <form id="warrior-status-form-force" method="post" action="/api/stop_now" class="js-api-form" style="display: none">
+              <input type="submit" value="Stop immediately" />
+            </form>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div id="bandwidth">
+      <table cellspacing="0">
+        <tbody>
+          <tr>
+            <td><span id="bandwidth-sent">... MB</span> &#x2b06;</td>
+            <td style="color: #459B34"><span id="bandwidth-received">... MB</span> &#x2b07;</td>
+          </tr>
+          <tr>
+            <td><span id="bandwidth-sending">... kB/s</span> &#x2b06;</td>
+            <td style="color: #459B34"><span id="bandwidth-receiving">... kB/s</span> &#x2b07;</td>
+          </tr>
+        </tbody>
+      </table>
+      <canvas id="bandwidth-canvas" width="159" height="80"></canvas>
+    </div>
+  </div>
+
+  <div class="content" id="view-current-project">
+    <div id="project-header"></div>
+    <div id="task-summary">
+        <ol class="tasks" title="Task Status Summary"></ol>
+    </div>
+    <div id="items-view-settings"></div>
+    <div id="items"></div>
+  </div>
+
+  <div class="content multi-project" id="view-all-projects">
+    <div id="projects-header">
+      <h2>All projects</h2>
+      <p>What would you like to do?</p>
+    </div>
+    <div id="projects"></div>
+  </div>
+
+  <div class="content multi-project" id="view-settings">
+    <div id="settings-header">
+      <h2>Your settings</h2>
+      <p>Customize your warrior</p>
+    </div>
+    <div id="settings">
+      <form method="post" action="/api/settings" id="settings-form">
+        <p class="advanced-settings-field"><label for="f-advanced-settings"><input type="checkbox" name="advanced_settings" value="1" id="f-advanced-settings">Show advanced settings</label></p>
+        <ul id="settings-list"></ul>
+        <ul>
+          <li>
+            <input type="submit" value="Save settings" />
+            <span id="settings-saving">Saving settings...</span>
+          </li>
+        </ul>
+      </form>
+    </div>
+  </div>
+ 
+  <div class="content multi-project" id="view-help">
+    <div id="help-header">
+      <h2>About</h2>
+      <p>Information about your warrior</p>
+    </div>
+    <div id="broadcastMessage">
+    <h3>Announcements ✉</h3>
+    <div id="broadcastMessage-contents"></div>
+    </div>
+    <div id="help"></div>
+  </div>
+
+</body>
+</html>
+
