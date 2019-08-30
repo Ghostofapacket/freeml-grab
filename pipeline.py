@@ -16,6 +16,7 @@ import subprocess
 import sys
 import time
 import string
+import random
 
 import seesaw
 from seesaw.externalprocess import WgetDownload
@@ -58,8 +59,9 @@ if not WGET_LUA:
 #
 # Update this each time you make a non-cosmetic change.
 # It will be added to the WARC files and reported to the tracker.
-VERSION = '20190824.04'
-USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:66.0) Gecko/20100101 Firefox/66.0'
+VERSION = '20190830.01'
+with open('user-agents', 'r') as f:
+    USER_AGENT = random.choice(f.read().splitlines()).strip()
 TRACKER_ID = 'freeml'
 TRACKER_HOST = 'tracker.archiveteam.org'
 

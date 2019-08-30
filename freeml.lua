@@ -36,7 +36,8 @@ end
 allowed = function(url, parenturl)
   if string.match(url, "'+")
       or string.match(url, "[<>\\%*%$;%^%[%],%(%){}]")
-      or string.match(url, "^https?://[^/]+/[^/]+/cal_d/") then
+      or string.match(url, "^https?://[^/]+/[^/]+/cal_d/")
+      or string.match(url, "^https?://www%.facebook%.com/plugins/like%.php")	  then
     return false
   end
 
