@@ -59,11 +59,11 @@ if not WGET_LUA:
 #
 # Update this each time you make a non-cosmetic change.
 # It will be added to the WARC files and reported to the tracker.
-VERSION = '20190830.01'
+VERSION = '20190901.01'
 with open('user-agents', 'r') as f:
     USER_AGENT = random.choice(f.read().splitlines()).strip()
 TRACKER_ID = 'freeml'
-TRACKER_HOST = 'tracker.kiska.pw'
+TRACKER_HOST = 'tracker.archiveteam.org'
 
 
 ###########################################################################
