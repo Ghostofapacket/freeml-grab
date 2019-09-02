@@ -181,7 +181,7 @@ class WgetArgs(object):
             '--tries', 'inf',
             '--domains', 'freeml.com',
             '--span-hosts',
-            '-w', '0.75',
+            '-w', '1',
             '--random-wait',
             '--waitretry', '30',
             '--warc-file', ItemInterpolation('%(item_dir)s/%(warc_file_base)s'),
