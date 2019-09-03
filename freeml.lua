@@ -224,6 +224,11 @@ wget.callbacks.httploop_result = function(url, err, http_stat)
     downloaded[string.gsub(url["url"], "https?://", "http://")] = true
   end
 
+  if status_code ~= 200 and string.match(url, "^https?://www%.freeml%.com/ep%.umzx/grid/MLC/node/MlcHomeFront/mlc_id/[0-9]+$") then
+  io.stdout:write("Pipeline Banned... ")
+  abortgrab = true
+  end
+  
   if abortgrab == true then
     io.stdout:write("ABORTING...\n")
     return wget.actions.ABORT
