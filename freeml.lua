@@ -152,6 +152,11 @@ wget.callbacks.get_urls = function(file, url, is_css, iri)
       check(string.match(url, "^(https?://.+/)")..newurl)
     end
   end
+  
+  if status_code ~= 200 and string.match(url, "^https?://www%.freeml%.com/.+/[0-9]+$") then
+  io.stdout:write("Pipeline Banned... ")
+  abortgrab = true
+  end
 
   if allowed(url, nil) and not string.match(url, "^https?://fimg%.freeml%.com") then
     html = read_file(file)
@@ -223,8 +228,8 @@ wget.callbacks.httploop_result = function(url, err, http_stat)
     downloaded[url["url"]] = true
     downloaded[string.gsub(url["url"], "https?://", "http://")] = true
   end
-
-  if status_code ~= 200 and string.match(url, "^https?://www%.freeml%.com/ep%.umzx/grid/MLC/node/MlcHomeFront/mlc_id/[0-9]+$") then
+  
+  if status_code ~= 200 and string.match(url, "^https?://www%.freeml%.com/.+/[0-9]+$") then
   io.stdout:write("Pipeline Banned... ")
   abortgrab = true
   end
