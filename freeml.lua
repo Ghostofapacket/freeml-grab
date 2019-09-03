@@ -154,7 +154,7 @@ wget.callbacks.get_urls = function(file, url, is_css, iri)
   end
   
   if status_code ~= 200 and string.match(url, "^https?://www%.freeml%.com/.+/[0-9]+$") then
-  io.stdout:write("Pipeline Banned... ")
+  io.stdout:write("Pipeline Banned... \n")
   abortgrab = true
   end
 
